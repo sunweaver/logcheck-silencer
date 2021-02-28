@@ -30,8 +30,8 @@ UNSILENCE           = 1
 SILENCE             = 2
 LIST                = 3
 REPORTLEVEL         = "server"
-LOGCHECK_CONFIG_DIR = "/etc/logcheck/"
-LOGCHECK_CONFIG     = "/etc/logcheck/logcheck.conf"
+LOGCHECK_CONFIG_DIR = "/etc/logcheck"
+LOGCHECK_CONFIG     = "{dir}/logcheck.conf".format(dir=LOGCHECK_CONFIG_DIR)
 LOGCHECK_EXECUTABLE = "/usr/sbin/logcheck"
 # ls -> logcheck-silencer
 LS_CONFIG_DIR       = "/etc/logcheck-silencer"
