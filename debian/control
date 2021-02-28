@@ -1,0 +1,23 @@
+Source: logcheck-silencer
+Section: misc
+Priority: optional
+Maintainer: Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Vcs-Browser: https://gitlab.das-netzwerkteam.de/NWT/logcheck-silencer/
+Vcs-Git: https://gitlab.das-netzwerkteam.de/NWT/logcheck-silencer.git
+
+Package: logcheck-silencer
+Architecture: all
+Depends:
+ ${misc:Depends},
+ python3,
+Description: Silence logcheck messages from selected daemons
+ When using the logcheck utility, often logcheck sends to many mails
+ containing too many false-positives. Often, logcheck reports log messages
+ from daemons that are not system critical and could thus be ignored.
+ .
+ With logcheck silencer you can enable/disable logcheck messages
+ for specific services from the command line.
