@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2021 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
+import getopt
+import os.path
+import sys
+
+# actions
+NONE                = 0
+UNSILENCE           = 1
+SILENCE             = 2
+LIST                = 3
+REPORTLEVEL         = "server"
+LOGCHECK_CONFIG_DIR = "/etc/logcheck/"
+LOGCHECK_CONFIG     = "/etc/logcheck/logcheck.conf"
+LOGCHECK_EXECUTABLE = "/usr/sbin/logcheck"
+
+reportlevels = ( 'workstation', 'server', 'paranoid', )
+
+def usage(cmd, exitcode):
+    print ("{cmd} (-s <daemon>|-u <daemon>|-l) [-r <reportlevel>]".format(cmd=os.path.basename(cmd)))
+    sys.exit(exitcode)
+
+def pre_checks():
+    if not os.path.isfile(LOGCHECK_EXECUTABLE):
+        print ("ERROR: 'logcheck' command not found")
+        sys.exit(3)
+    if not os.path.isfile(LOGCHECK_CONFIG):
+        print ("ERROR: 'logcheck's main configuration file not found")
+        sys.exit(4)
+    if not os.path.isdir(LOGCHECK_CONFIG_DIR):
+        print ("ERROR: 'logcheck configuration directory not found")
+        sys.exit(5)
+
+def silence_daemon(daemon, reportlevel):
+    _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
+    if os.path.isdir(_ignore_dir) and \
+       os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
+        print ("Messages from '{daemon}' have already been silenced".format(daemon=daemon))
+    else:
+        print ("Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'w') as f:
+            f.write('# created by logcheck-silencer\n')
+            f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(\[[0-9]+\])*:.*\n' % daemon)
+
+def unsilence_daemon(daemon, reportlevel):
+    _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
+    if os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
+        print ("Unsilencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        os.remove("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon))
+    else:
+        print ("Messages from '{daemon}' have not been silented".format(daemon=daemon))
+
+def list_silenced_daemons(reportlevel):
+    _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
+    silenced = []
+    if os.path.isdir(_ignore_dir):
+        for root, dirs, files in os.walk(_ignore_dir):
+            silenced.extend([ f.split('_')[0] for f in files if f.endswith('___silenced_by_logcheck-silencer') ])
+
+    silenced.sort()
+    for s in silenced:
+        print ("{daemon}".format(daemon=s))
+
+def main(cmd, argv):
+    action = NONE
+    reportlevel = REPORTLEVEL
+    try:
+        opts, args = getopt.getopt(argv,"lhs:u:r:",["silent=","unsilence=", "reportlevel=", "list"])
+    except getopt.GetoptError:
+        usage(cmd, 2)
+    for opt, arg in opts:
+        if opt == '-h':
+            usage(cmd, 0)
+        elif opt in ("-s", "--silent"):
+            action = SILENCE
+            daemon = arg
+        elif opt in ("-u", "--unsilence"):
+            action = UNSILENCE
+            daemon = arg
+        elif opt in ("-r", "--reportlevel"):
+            for rl in reportlevels:
+                if rl.startswith(arg):
+                    reportlevel = rl
+        elif opt in ("-l", "--list"):
+            action = LIST
+
+    if action == LIST:
+        list_silenced_daemons(reportlevel)
+        sys.exit(0)
+    if reportlevel and action == SILENCE:
+        silence_daemon(daemon, reportlevel)
+    elif reportlevel and action == UNSILENCE:
+        unsilence_daemon(daemon, reportlevel)
+    else:
+        usage(cmd, 1)
+    print ("Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
+
+if __name__ == "__main__":
+   pre_checks()
+   main(sys.argv[0], sys.argv[1:])
