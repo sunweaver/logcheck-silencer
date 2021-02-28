@@ -9,13 +9,15 @@ pkgsysconfdir= $(sysconfdir)/logcheck-silencer
 # by the callers.
 bindir = $(prefix)/sbin
 
-INSTALL = install
+INSTALL = install -p
+COPY    = cp
 
 all:
 
 install:
 	$(INSTALL) -d $(DESTDIR)$(bindir)/. $(DESTDIR)$(pkgsysconfdir)/.
 	$(INSTALL) logcheck-silencer $(DESTDIR)$(bindir)/.
+	$(COPY)    data/conf/* $(DESTDIR)$(pkgsysconfdir)/.
 
 distclean: clean
 clean:

@@ -19,6 +19,10 @@
 import getopt
 import os.path
 import sys
+import socket
+
+VERSION             = "0.1"
+HOSTNAME            = socket.gethostname()
 
 # actions
 NONE                = 0
@@ -29,6 +33,8 @@ REPORTLEVEL         = "server"
 LOGCHECK_CONFIG_DIR = "/etc/logcheck/"
 LOGCHECK_CONFIG     = "/etc/logcheck/logcheck.conf"
 LOGCHECK_EXECUTABLE = "/usr/sbin/logcheck"
+# ls -> logcheck-silencer
+LS_CONFIG_DIR       = "/etc/logcheck-silencer"
 
 reportlevels = ( 'workstation', 'server', 'paranoid', )
 
@@ -53,10 +59,29 @@ def silence_daemon(daemon, reportlevel):
        os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
         print ("Messages from '{daemon}' have already been silenced".format(daemon=daemon))
     else:
+        extra_silencing_rules = []
         print ("Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        if os.path.isfile('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)):
+            with open('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)) as f:
+                extra_silencing_rules = f.readlines()
         with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'w') as f:
-            f.write('# created by logcheck-silencer\n')
+            f.write('# --- DO NOT MODIFY THIS FILE HERE ---\n')
+            f.write('#\n')
+            f.write('# Created by logcheck-silencer {version}\n'.format(version=VERSION))
+            f.write('#\n')
+            f.write('# You can unsilence \'{daemon}\' messages in logcheck reports by running:\n'.format(daemon=daemon))
+            f.write('#\n')
+            f.write('#   root@{hostname}:~ logcheck-silencer -u {daemon}\n'.format(hostname=HOSTNAME, daemon=daemon))
+            f.write('#\n')
             f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(\[[0-9]+\])*:.*\n' % daemon)
+            if extra_silencing_rules:
+                print ("Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
+                f.write('\n')
+                f.write('# NOTE: You can adapt the part below in\n')
+                f.write('# {lscfg_dir}/{daemon}.silence\n'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
+                f.write('#\n')
+                for l in extra_silencing_rules:
+                    f.write('{line}'.format(line=l))
 
 def unsilence_daemon(daemon, reportlevel):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)

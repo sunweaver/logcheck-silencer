@@ -1,0 +1,5 @@
+# Additionally silence all ssh connections coming from the Icinga2 host
+# monitoring this system.
+#
+# Uncomment the below line and add the IP address of your Icinga server here ... vvvvvvvvvvvvvvvvvvvvv
+#^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sshd(\[[0-9]+\])*:\ Connection\ closed\ by\ <IP-of-Icinga2-Server>\ port\ [0-9]+\ \[preauth\]$
