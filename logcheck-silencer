@@ -100,8 +100,7 @@ def list_silenced_daemons(reportlevel):
             silenced.extend([ f.split('_')[0] for f in files if f.endswith('___silenced_by_logcheck-silencer') ])
 
     silenced.sort()
-    for s in silenced:
-        print ("{daemon}".format(daemon=s))
+    return silenced
 
 def main(cmd, argv):
     action = NONE
@@ -130,7 +129,9 @@ def main(cmd, argv):
             action = LIST
 
     if action == LIST:
-        list_silenced_daemons(reportlevel)
+        silenced = list_silenced_daemons(reportlevel)
+        for s in silenced:
+            print ("{daemon}".format(daemon=s))
         sys.exit(0)
     if reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
