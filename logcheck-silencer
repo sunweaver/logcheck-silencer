@@ -53,9 +53,10 @@ def pre_checks():
         print ("ERROR: 'logcheck configuration directory not found")
         sys.exit(5)
 
-def silence_daemon(daemon, reportlevel):
+def silence_daemon(daemon, reportlevel, force=False):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
-    if os.path.isdir(_ignore_dir) and \
+    if not force and \
+       os.path.isdir(_ignore_dir) and \
        os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
         print ("Messages from '{daemon}' have already been silenced".format(daemon=daemon))
     else:
@@ -105,8 +106,9 @@ def list_silenced_daemons(reportlevel):
 def main(cmd, argv):
     action = NONE
     reportlevel = REPORTLEVEL
+    force = False
     try:
-        opts, args = getopt.getopt(argv,"lhs:u:r:",["silent=","unsilence=", "reportlevel=", "list"])
+        opts, args = getopt.getopt(argv,"lhfs:u:r:",["silent=","unsilence=", "reportlevel=", "list", "force"])
     except getopt.GetoptError:
         usage(cmd, 2)
     for opt, arg in opts:
@@ -115,6 +117,8 @@ def main(cmd, argv):
         elif opt in ("-s", "--silent"):
             action = SILENCE
             daemon = arg
+        elif opt in ("-f", "--force"):
+            force = True
         elif opt in ("-u", "--unsilence"):
             action = UNSILENCE
             daemon = arg
@@ -129,7 +133,7 @@ def main(cmd, argv):
         list_silenced_daemons(reportlevel)
         sys.exit(0)
     if reportlevel and action == SILENCE:
-        silence_daemon(daemon, reportlevel)
+        silence_daemon(daemon, reportlevel, force=force)
     elif reportlevel and action == UNSILENCE:
         unsilence_daemon(daemon, reportlevel)
     else:
