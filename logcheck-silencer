@@ -29,6 +29,7 @@ NONE                = 0
 UNSILENCE           = 1
 SILENCE             = 2
 LIST                = 3
+CHECK_ALL           = 4
 REPORTLEVEL         = "server"
 LOGCHECK_CONFIG_DIR = "/etc/logcheck"
 LOGCHECK_CONFIG     = "{dir}/logcheck.conf".format(dir=LOGCHECK_CONFIG_DIR)
@@ -107,7 +108,7 @@ def main(cmd, argv):
     reportlevel = REPORTLEVEL
     force = False
     try:
-        opts, args = getopt.getopt(argv,"lhfs:u:r:",["silent=","unsilence=", "reportlevel=", "list", "force"])
+        opts, args = getopt.getopt(argv,"lChfs:u:r:",["silent=","unsilence=", "reportlevel=", "list", "check-all", "force"])
     except getopt.GetoptError:
         usage(cmd, 2)
     for opt, arg in opts:
@@ -127,12 +128,21 @@ def main(cmd, argv):
                     reportlevel = rl
         elif opt in ("-l", "--list"):
             action = LIST
+        elif opt in ("-C", "--check-all"):
+            action = CHECK_ALL
 
     if action == LIST:
         silenced = list_silenced_daemons(reportlevel)
         for s in silenced:
             print ("{daemon}".format(daemon=s))
         sys.exit(0)
+
+    if action == CHECK_ALL:
+        silenced = list_silenced_daemons(reportlevel)
+        for s in silenced:
+            silence_daemon(daemon, reportlevel, force=True)
+        sys.exit(0)
+
     if reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
 
@@ -141,6 +151,7 @@ def main(cmd, argv):
 
     else:
         usage(cmd, 1)
+
     print ("Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
 if __name__ == "__main__":

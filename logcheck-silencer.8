@@ -49,6 +49,9 @@ If used with -s (--silence) then update the silencing config, even if it already
 \*(T<\fB\-u, \-\-unsilence \fR\fI<daemon>\fR\*(T>
 Unsilence all log messages coming from service or command \fI<daemon>\fR if previously silenced with \fBlogcheck-silencer\fR.
 .TP
+\*(T<\fB\-C, \-\-check\-all\fR\*(T>
+Re-silence (i.e. update) all already silenced services / commands. This is very helpful after having updated extra rules in /etc/logcheck-silencer/*.silence.
+.TP
 \*(T<\fB\-r, \-\-reportlevel\fR\fI(server|workstation|paranoid)\fR\*(T>
 Choose another than the default report level (default: 'server').
 .SH "SEE ALSO"
