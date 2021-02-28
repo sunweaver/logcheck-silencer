@@ -135,8 +135,10 @@ def main(cmd, argv):
         sys.exit(0)
     if reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
+
     elif reportlevel and action == UNSILENCE:
         unsilence_daemon(daemon, reportlevel)
+
     else:
         usage(cmd, 1)
     print ("Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
