@@ -1,0 +1,55 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH logcheck-silencer 8 "Feb 2021" "Version 0.1" "Logcheck Silencer"
+.SH NAME
+logcheck-silencer \- silence selected daemons in logcheck reports
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+\fBlogcheck-silencer\fR \kx
+.if (\nx>(\n(.l/2)) .nr x (\n(.l/5)
+'in \n(.iu+\nxu
+[
+\fIoptions\fR
+]
+'in \n(.iu-\nxu
+.ad b
+'hy
+.SH DESCRIPTION
+\fBlogcheck-silencer\fR provides an easy to use command line interface
+that allows one to disable messages from selected services / commands in
+logcheck reports.
+.PP
+When a service / command is silenced in logcheck reports,
+\fBlogcheck-silencer\fR creates a config snippet in
+/etc/logcheck/ignore.d.\fI<reportlevel>\fR with the name
+\fI<daemon>\fR___silenced_by_logcheck-silencer.
+.PP
+.SH OPTIONS
+\fBlogcheck-silencer\fR accepts the following options:
+.TP
+\*(T<\fB\-h, \-\-help\fR\*(T>
+Display help text with all available command line options and exit.
+.TP
+\*(T<\fB\-l, \-\-list\fR\*(T>
+Print a list of already silenced services / commands.
+.TP
+\*(T<\fB\-s, \-\-silence \fR\fI<daemon>\fR\*(T>
+Silence all log messages coming from service or command \fI<daemon>\fR.
+.TP
+\*(T<\fB\-u, \-\-unsilence\fR\fI<daemon>\fR\*(T>
+Unsilence all log messages coming from service or command \fI<daemon>\fR if previously silenced with \fBlogcheck-silencer\fR.
+.TP
+\*(T<\fB\-r, \-\-reportlevel\fR\fI(server|workstation|paranoid)\fR\*(T>
+Choose another than the default report level (default: 'server').
+.SH "SEE ALSO"
+\fBlogcheck(8)\fR
+.SH AUTHOR
+This manual has been written by Mike Gabriel
+<mike.gabriel@das-netzwerkteam.de>
