@@ -141,9 +141,8 @@ def main(cmd, argv):
         silenced = list_silenced_daemons(reportlevel)
         for s in silenced:
             silence_daemon(s, reportlevel, force=True)
-        sys.exit(0)
 
-    if reportlevel and action == SILENCE:
+    elif reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
 
     elif reportlevel and action == UNSILENCE:
