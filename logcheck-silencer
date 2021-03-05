@@ -140,7 +140,7 @@ def main(cmd, argv):
     if action == CHECK_ALL:
         silenced = list_silenced_daemons(reportlevel)
         for s in silenced:
-            silence_daemon(daemon, reportlevel, force=True)
+            silence_daemon(s, reportlevel, force=True)
         sys.exit(0)
 
     if reportlevel and action == SILENCE:
