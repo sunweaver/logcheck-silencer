@@ -75,7 +75,7 @@ def silence_daemon(daemon, reportlevel, force=False):
             f.write('#\n')
             f.write('#   root@{hostname}:~ logcheck-silencer -u {daemon}\n'.format(hostname=HOSTNAME, daemon=daemon))
             f.write('#\n')
-            f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(\[[0-9]+\])*:.*\n' % daemon)
+            f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(/[a-zA-Z]+|)([[0-9]+\]|):.*\n' % daemon)
             if extra_silencing_rules:
                 print ("NOTE:    Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
                 f.write('\n')
