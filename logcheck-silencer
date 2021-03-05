@@ -40,7 +40,7 @@ LS_CONFIG_DIR       = "/etc/logcheck-silencer"
 reportlevels = ( 'workstation', 'server', 'paranoid', )
 
 def usage(cmd, exitcode):
-    print ("{cmd} (-s <daemon>|-u <daemon>|-l) [-r <reportlevel>]".format(cmd=os.path.basename(cmd)))
+    print ("{cmd} ((-s <daemon>|-u <daemon>|-C)|-l) [-r <reportlevel>]".format(cmd=os.path.basename(cmd)))
     sys.exit(exitcode)
 
 def pre_checks():
