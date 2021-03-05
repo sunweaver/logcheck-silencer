@@ -1,6 +1,46 @@
-2021-02-28 19:42:57 +0100 Mike Gabriel
+2021-03-05 17:19:23 +0100 Mike Gabriel
 
-	* release 0.1 (HEAD -> main, tag: 0.1)
+	* release 0.2 (HEAD -> main, tag: 0.2)
+
+2021-03-05 17:15:29 +0100 Mike Gabriel (e38d783)
+
+	* usage: Add -C option to usage printout.
+
+2021-03-05 17:14:46 +0100 Mike Gabriel (0883125)
+
+	* logcheck-silencer: Make -C (CHECK_ALL) an alternative to SILENCE
+          and UNSILENCE actions.
+
+2021-03-05 17:14:06 +0100 Mike Gabriel (1247b7e)
+
+	* logcheck-silencer: Fix CHECK_ALL action.
+
+2021-03-05 17:13:08 +0100 Mike Gabriel (6eed9c0)
+
+	* logcheck-silencer: Align messages printed to stdout, prefix with
+          message type keyword.
+
+2021-02-28 19:55:36 +0100 Mike Gabriel (f0c1e47)
+
+	* logcheck-silencer: Add --check-all option.
+
+2021-02-28 19:55:17 +0100 Mike Gabriel (10e87b4)
+
+	* logcheck-silencer: Some white-space beautifications.
+
+2021-02-28 19:54:43 +0100 Mike Gabriel (70fd735)
+
+	* logcheck-silencer: Don't print list of silenced daemons directly in
+          list_silenced_daemons(), rather return that list.
+
+2021-02-28 19:48:48 +0100 Mike Gabriel (eca6622)
+
+	* logcheck-silencer: Add --force option (to be used along with
+          --silence option).
+
+2021-02-28 19:42:57 +0100 Mike Gabriel (9e9e6d0)
+
+	* release 0.1 (tag: 0.1)
 
 2021-02-28 19:33:19 +0100 Mike Gabriel (4271dc9)
 
