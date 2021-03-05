@@ -45,13 +45,13 @@ def usage(cmd, exitcode):
 
 def pre_checks():
     if not os.path.isfile(LOGCHECK_EXECUTABLE):
-        print ("ERROR: 'logcheck' command not found")
+        print ("ERROR:   'logcheck' command not found")
         sys.exit(3)
     if not os.path.isfile(LOGCHECK_CONFIG):
-        print ("ERROR: 'logcheck's main configuration file not found")
+        print ("ERROR:   logcheck's main configuration file not found")
         sys.exit(4)
     if not os.path.isdir(LOGCHECK_CONFIG_DIR):
-        print ("ERROR: 'logcheck configuration directory not found")
+        print ("ERROR:   logcheck configuration directory not found")
         sys.exit(5)
 
 def silence_daemon(daemon, reportlevel, force=False):
@@ -59,10 +59,10 @@ def silence_daemon(daemon, reportlevel, force=False):
     if not force and \
        os.path.isdir(_ignore_dir) and \
        os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
-        print ("Messages from '{daemon}' have already been silenced".format(daemon=daemon))
+        print ("WARNING: Messages from '{daemon}' have already been silenced".format(daemon=daemon))
     else:
         extra_silencing_rules = []
-        print ("Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        print ("NOTE:    Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
         if os.path.isfile('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)):
             with open('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)) as f:
                 extra_silencing_rules = f.readlines()
@@ -77,7 +77,7 @@ def silence_daemon(daemon, reportlevel, force=False):
             f.write('#\n')
             f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(\[[0-9]+\])*:.*\n' % daemon)
             if extra_silencing_rules:
-                print ("Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
+                print ("NOTE:    Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
                 f.write('\n')
                 f.write('# NOTE: You can adapt the part below in\n')
                 f.write('# {lscfg_dir}/{daemon}.silence\n'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
@@ -91,7 +91,7 @@ def unsilence_daemon(daemon, reportlevel):
         print ("Unsilencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
         os.remove("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon))
     else:
-        print ("Messages from '{daemon}' have not been silented".format(daemon=daemon))
+        print ("WARNING: Messages from '{daemon}' have not been silented".format(daemon=daemon))
 
 def list_silenced_daemons(reportlevel):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
@@ -152,7 +152,7 @@ def main(cmd, argv):
     else:
         usage(cmd, 1)
 
-    print ("Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
+    print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
 if __name__ == "__main__":
    pre_checks()
