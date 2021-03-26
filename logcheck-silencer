@@ -61,11 +61,11 @@ def silence_daemon(daemon, reportlevel, force=False):
        os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
         print ("WARNING: Messages from '{daemon}' have already been silenced".format(daemon=daemon))
     else:
-        extra_silencing_rules = []
+        specific_silencing_rules = []
         print ("NOTE:    Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
         if os.path.isfile('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)):
             with open('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)) as f:
-                extra_silencing_rules = f.readlines()
+                specific_silencing_rules = f.readlines()
         with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'w') as f:
             f.write('# --- DO NOT MODIFY THIS FILE HERE ---\n')
             f.write('#\n')
@@ -75,14 +75,15 @@ def silence_daemon(daemon, reportlevel, force=False):
             f.write('#\n')
             f.write('#   root@{hostname}:~ logcheck-silencer -u {daemon}\n'.format(hostname=HOSTNAME, daemon=daemon))
             f.write('#\n')
-            f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(/[a-zA-Z]+|)([[0-9]+\]|):.*\n' % daemon)
-            if extra_silencing_rules:
+            if not specific_silencing_rules:
+                f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(/[a-zA-Z]+|)([[0-9]+\]|):.*\n' % daemon)
+            else:
                 print ("NOTE:    Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
                 f.write('\n')
                 f.write('# NOTE: You can adapt the part below in\n')
                 f.write('# {lscfg_dir}/{daemon}.silence\n'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
                 f.write('#\n')
-                for l in extra_silencing_rules:
+                for l in specific_silencing_rules:
                     f.write('{line}'.format(line=l))
 
 def unsilence_daemon(daemon, reportlevel):
