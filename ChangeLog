@@ -1,6 +1,62 @@
-2021-03-05 17:19:23 +0100 Mike Gabriel
+2021-03-26 20:06:32 +0100 Mike Gabriel
 
-	* release 0.2 (HEAD -> main, tag: 0.2)
+	* release 0.3 (HEAD -> main, tag: 0.3)
+
+2021-03-26 20:03:20 +0100 Mike Gabriel (74b45af)
+
+	* logcheck-silencer: Add missing 'NOTE:' in a stdout message.
+
+2021-03-26 20:02:35 +0100 Mike Gabriel (3036c62)
+
+	* logcheck-silencer: Let tuples end with a trailing comma.
+
+2021-03-26 20:02:05 +0100 Mike Gabriel (7eb7383)
+
+	* logcheck-silencer: Longopt for silencing a services is --silence
+          (not --silent).
+
+2021-03-26 20:01:00 +0100 Mike Gabriel (b28bfe4)
+
+	* logcheck-silencer{,.8}: Add --pkgupdate option.
+
+2021-03-26 19:59:55 +0100 Mike Gabriel (f3fc53e)
+
+	* logcheck-silencer: Detected changes during CHECK_ALL actions.
+
+2021-03-26 16:13:07 +0100 Mike Gabriel (a1e9b39)
+
+	* logcheck-silencer: For the general silencing rule, optionally
+          append .service to the service name.
+
+2021-03-26 16:11:51 +0100 Mike Gabriel (9369de9)
+
+	* logcheck-silencer: Fix NOTE message that reports about using a
+          service-specific silencing rules.
+
+2021-03-26 15:38:45 +0100 Mike Gabriel (772fc3b)
+
+	* data/conf/ufw.silence: Add silencing rule for '[UWF BLOCK]'
+          messages logged by ufw-configured iptables / nftables.
+
+2021-03-26 15:34:06 +0100 Mike Gabriel (0eacec8)
+
+	* logcheck-silencer: Don't write general exp anymore, if we have a
+          '<service>.silence' file.
+
+2021-03-26 15:33:31 +0100 Mike Gabriel (842e4af)
+
+	* data/conf/icinga2.silence: Add regexp that hides all icinga2
+          messages into the file (not auto-generated anymore, see
+          next commit).
+
+2021-03-05 17:31:50 +0100 Mike Gabriel (13fab0e)
+
+	* logcheck-silencer: Check process names like used by postfix (like
+          'postfix/qmgr[12345]').
+
+2021-03-05 17:19:23 +0100 Mike Gabriel (2b9b463)
+
+	* release 0.2 (tag: 0.2)
 
 2021-03-05 17:15:29 +0100 Mike Gabriel (e38d783)
 
