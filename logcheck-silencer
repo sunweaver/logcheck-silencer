@@ -78,7 +78,7 @@ def silence_daemon(daemon, reportlevel, force=False):
             if not specific_silencing_rules:
                 f.write('^\w{3} [ :0-9]{11} [._[:alnum:]-]+ %s(/[a-zA-Z]+|)([[0-9]+\]|):.*\n' % daemon)
             else:
-                print ("NOTE:    Appending extra silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
+                print ("NOTE:    Using specific silencing rules as found in '{lscfg_dir}/{daemon}.silence'".format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
                 f.write('\n')
                 f.write('# NOTE: You can adapt the part below in\n')
                 f.write('# {lscfg_dir}/{daemon}.silence\n'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon))
