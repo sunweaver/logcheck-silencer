@@ -1,3 +1,5 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ icinga2(/[a-zA-Z]+|)([[0-9]+\]|):.*
+
 # Additionally silence all ssh connections coming from the Icinga2 host
 # monitoring this system.
 #
