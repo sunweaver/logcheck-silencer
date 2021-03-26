@@ -17,9 +17,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import getopt
+import os
 import os.path
 import sys
 import socket
+
+from hashlib import sha256
 
 VERSION             = "0.2"
 HOSTNAME            = socket.gethostname()
@@ -54,18 +57,25 @@ def pre_checks():
         print ("ERROR:   logcheck configuration directory not found")
         sys.exit(5)
 
-def silence_daemon(daemon, reportlevel, force=False):
+def silence_daemon(daemon, reportlevel, force=False, report_updates_only=False):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
     if not force and \
-       os.path.isdir(_ignore_dir) and \
-       os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
-        print ("WARNING: Messages from '{daemon}' have already been silenced".format(daemon=daemon))
+        os.path.isdir(_ignore_dir) and \
+        os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
+        if not report_updates_only: print ("WARNING: Messages from '{daemon}' have already been silenced".format(daemon=daemon))
     else:
         specific_silencing_rules = []
-        print ("NOTE:    Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        if not report_updates_only: print ("NOTE:    Silencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
         if os.path.isfile('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)):
             with open('{lscfg_dir}/{daemon}.silence'.format(lscfg_dir=LS_CONFIG_DIR, daemon=daemon)) as f:
                 specific_silencing_rules = f.readlines()
+
+        if os.path.isfile('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon)):
+            with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'rb') as f:
+                checksum_previous = sha256(f.read()).hexdigest()
+        else:
+            checksum_previous = None
+
         with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'w') as f:
             f.write('# --- DO NOT MODIFY THIS FILE HERE ---\n')
             f.write('#\n')
@@ -85,6 +95,13 @@ def silence_daemon(daemon, reportlevel, force=False):
                 f.write('#\n')
                 for l in specific_silencing_rules:
                     f.write('{line}'.format(line=l))
+
+        with open('{ignore_dir}/{daemon}___silenced_by_logcheck-silencer'.format(ignore_dir=_ignore_dir, daemon=daemon), 'rb') as f:
+            checksum_next = sha256(f.read()).hexdigest()
+
+        if checksum_previous is not None and checksum_next != checksum_previous:
+            print ("INFO:    Updated outdated silencing ruleset for service '{daemon}'".format(daemon=daemon))
+
 
 def unsilence_daemon(daemon, reportlevel):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
@@ -139,20 +156,23 @@ def main(cmd, argv):
         sys.exit(0)
 
     if action == CHECK_ALL:
-        silenced = list_silenced_daemons(reportlevel)
-        for s in silenced:
-            silence_daemon(s, reportlevel, force=True)
+        for reportlevel in reportlevels:
+            silenced = list_silenced_daemons(reportlevel)
+            for s in silenced:
+                silence_daemon(s, reportlevel, force=True, report_updates_only=pkgupdate)
+            if not pkgupdate:
+                print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
     elif reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
+        print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
     elif reportlevel and action == UNSILENCE:
         unsilence_daemon(daemon, reportlevel)
-
+        print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
     else:
         usage(cmd, 1)
 
-    print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
 if __name__ == "__main__":
    pre_checks()
