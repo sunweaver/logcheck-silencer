@@ -106,7 +106,7 @@ def silence_daemon(daemon, reportlevel, force=False, report_updates_only=False):
 def unsilence_daemon(daemon, reportlevel):
     _ignore_dir = "{etc_logcheck}/ignore.d.{reportlevel}".format(etc_logcheck=LOGCHECK_CONFIG_DIR, reportlevel=reportlevel)
     if os.path.isfile("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon)):
-        print ("Unsilencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
+        print ("NOTE:    Unsilencing '{daemon}' messages in logcheck reports".format(daemon=daemon))
         os.remove("{ignore_dir}/{daemon}___silenced_by_logcheck-silencer".format(ignore_dir=_ignore_dir, daemon=daemon))
     else:
         print ("WARNING: Messages from '{daemon}' have not been silented".format(daemon=daemon))
