@@ -125,8 +125,10 @@ def main(cmd, argv):
     action = NONE
     reportlevel = REPORTLEVEL
     force = False
+    pkgupdate = False
+
     try:
-        opts, args = getopt.getopt(argv,"lChfs:u:r:",["silent=","unsilence=", "reportlevel=", "list", "check-all", "force"])
+        opts, args = getopt.getopt(argv,"lChfs:u:r:",["silence=","unsilence=", "reportlevel=", "list", "check-all", "force", "pkgupdate", ])
     except getopt.GetoptError:
         usage(cmd, 2)
     for opt, arg in opts:
@@ -148,6 +150,8 @@ def main(cmd, argv):
             action = LIST
         elif opt in ("-C", "--check-all"):
             action = CHECK_ALL
+        elif opt in ("--pkgupdate",):
+            pkgupdate = True
 
     if action == LIST:
         silenced = list_silenced_daemons(reportlevel)

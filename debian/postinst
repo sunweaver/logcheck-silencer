@@ -19,7 +19,7 @@ set -e
 
 case "${1}" in
 	'configure')
-		logcheck-silencer -C
+		logcheck-silencer -C --pkgupdate
 		;;
 	'abort-upgrade'|'abort-remove'|'abort-deconfigure')
 		;;

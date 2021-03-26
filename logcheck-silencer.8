@@ -52,6 +52,9 @@ Unsilence all log messages coming from service or command \fI<daemon>\fR if prev
 \*(T<\fB\-C, \-\-check\-all\fR\*(T>
 Re-silence (i.e. update) all already silenced services / commands. This is very helpful after having updated extra rules in /etc/logcheck-silencer/*.silence.
 .TP
+\*(T<\fB\-f, \-\-pkgupdate\fR\*(T>
+If used (normally together with -C) less verbose output is produced, suitable for packaging postinst scripts.
+.TP
 \*(T<\fB\-r, \-\-reportlevel\fR\fI(server|workstation|paranoid)\fR\*(T>
 Choose another than the default report level (default: 'server').
 .SH "SEE ALSO"
