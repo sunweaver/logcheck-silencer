@@ -137,18 +137,18 @@ def main(cmd, argv):
         elif opt in ("-s", "--silence", ):
             action = SILENCE
             daemon = arg
-        elif opt in ("-f", "--force"):
+        elif opt in ("-f", "--force", ):
             force = True
-        elif opt in ("-u", "--unsilence"):
+        elif opt in ("-u", "--unsilence", ):
             action = UNSILENCE
             daemon = arg
-        elif opt in ("-r", "--reportlevel"):
+        elif opt in ("-r", "--reportlevel", ):
             for rl in reportlevels:
                 if rl.startswith(arg):
                     reportlevel = rl
-        elif opt in ("-l", "--list"):
+        elif opt in ("-l", "--list", ):
             action = LIST
-        elif opt in ("-C", "--check-all"):
+        elif opt in ("-C", "--check-all", ):
             action = CHECK_ALL
         elif opt in ("--pkgupdate",):
             pkgupdate = True
