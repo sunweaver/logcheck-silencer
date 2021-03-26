@@ -165,7 +165,10 @@ def main(cmd, argv):
             for s in silenced:
                 silence_daemon(s, reportlevel, force=True, report_updates_only=pkgupdate)
             if not pkgupdate:
-                print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
+                if silenced:
+                    print ("NOTE:    Updated logcheck configuration for report level '{reportlevel}'".format(reportlevel=reportlevel))
+                else:
+                    print ("INFO:    Nothing to do / to update for report level '{reportlevel}'".format(reportlevel=reportlevel))
 
     elif reportlevel and action == SILENCE:
         silence_daemon(daemon, reportlevel, force=force)
