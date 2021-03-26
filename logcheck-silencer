@@ -134,7 +134,7 @@ def main(cmd, argv):
     for opt, arg in opts:
         if opt == '-h':
             usage(cmd, 0)
-        elif opt in ("-s", "--silent"):
+        elif opt in ("-s", "--silence", ):
             action = SILENCE
             daemon = arg
         elif opt in ("-f", "--force"):
