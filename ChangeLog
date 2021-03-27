@@ -1,6 +1,20 @@
-2021-03-26 20:06:32 +0100 Mike Gabriel
+2021-03-27 14:56:27 +0100 Mike Gabriel
 
-	* release 0.3 (HEAD -> main, tag: 0.3)
+	* release 0.4 (HEAD -> main, tag: 0.4)
+
+2021-03-26 20:14:37 +0100 Mike Gabriel (6bab89f)
+
+	* logcheck-silencer: After CHECK_ALL action, improve feedback to
+          stdout (configuration updated vs. nothing to do).
+
+2021-03-26 20:09:31 +0100 Mike Gabriel (aa2888a)
+
+	* logcheck-silencer: Silence another stdout message if --pkgupdate is
+          used.
+
+2021-03-26 20:06:32 +0100 Mike Gabriel (72b859c)
+
+	* release 0.3 (tag: 0.3)
 
 2021-03-26 20:03:20 +0100 Mike Gabriel (74b45af)
 

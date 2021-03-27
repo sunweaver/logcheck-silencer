@@ -1,3 +1,10 @@
+logcheck-silencer (0.4-0) unstable; urgency=medium
+
+  * Upstream-provided Debian package for logcheck-silencer.
+    See upstream ChangeLog for recent changes.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sat, 27 Mar 2021 14:57:27 +0100
+
 logcheck-silencer (0.3-0) unstable; urgency=medium
 
   * Upstream-provided Debian package for logcheck-silencer.
