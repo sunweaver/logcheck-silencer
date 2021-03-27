@@ -13,6 +13,7 @@ Package: logcheck-silencer
 Architecture: all
 Depends:
  ${misc:Depends},
+ logcheck,
  python3,
 Description: Silence logcheck messages from selected daemons
  When using the logcheck utility, often logcheck sends to many mails
