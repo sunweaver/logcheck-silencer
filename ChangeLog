@@ -1,6 +1,29 @@
-2021-03-27 14:56:27 +0100 Mike Gabriel
+2021-03-28 22:14:54 +0200 Mike Gabriel
 
-	* release 0.4 (HEAD -> main, tag: 0.4)
+	* release 0.5 (HEAD -> main, tag: 0.5)
+
+2021-03-28 22:05:06 +0200 Mike Gabriel (336da03)
+
+	* data/conf/uif.silence: Add specific silencing filter for uif
+          related firewall/iptables log messages.
+
+2021-03-28 22:04:44 +0200 Mike Gabriel (e2106db)
+
+	* data/conf/openvpn.silence: Add specific silencing filter for
+          openvpn log messages.
+
+2021-03-27 16:19:05 +0100 Mike Gabriel (5d4b622)
+
+	* debian/postinst: Only run logcheck-silencer's CHECK_ALL action if
+          logcheck is installed.
+
+2021-03-27 16:18:44 +0100 Mike Gabriel (7c3f190)
+
+	* debian/control: Add D (logcheck-silencer): logcheck.
+
+2021-03-27 14:56:27 +0100 Mike Gabriel (a490561)
+
+	* release 0.4 (tag: 0.4)
 
 2021-03-26 20:14:37 +0100 Mike Gabriel (6bab89f)
 
