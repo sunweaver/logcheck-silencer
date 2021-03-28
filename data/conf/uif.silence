@@ -1,0 +1,4 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ kernel:\ \[[.0-9]+]\ \FW\ INVALID\ STATE:.*
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ kernel:\ \[[.0-9]+]\ \FW6\ INVALID\ STATE:.*
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ kernel:\ \[[.0-9]+]\ \FW\ REJECT\ \((input|output|forward)\):.*
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ kernel:\ \[[.0-9]+]\ \FW6\ REJECT\ \((input|output|forward)\):.*
