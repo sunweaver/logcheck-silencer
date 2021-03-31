@@ -1,0 +1,5 @@
+# Debian buster machines
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ rsyslogd(/[a-zA-Z]+|)([[0-9]+\]|):.*\ rsyslogd\ was\ HUPed$
+
+# Debian stretch machines
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ liblogging-stdlog(/[a-zA-Z]+|)([[0-9]+\]|):.*\ rsyslogd\ was\ HUPed$
