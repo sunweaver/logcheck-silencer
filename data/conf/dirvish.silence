@@ -1,0 +1,6 @@
+# Normally no syslog logging, except some SSH messages that could be silenced...
+#
+# Enable this rool on the backup nodes (not the backup server).
+#
+# Uncomment the below line and add the IP address of your backup server here ...        vvvvvvvvvvvvvvvvvvvvv
+#^\w{3} [ :0-9]{11} [._[:alnum:]-]+ sshd(\[[0-9]+\])*:\ Disconnected\ from\ user\ root\ <IP-of-Icinga2-Server>\ port\ [0-9]+\$
