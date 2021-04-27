@@ -136,12 +136,12 @@ def main(cmd, argv):
             usage(cmd, 0)
         elif opt in ("-s", "--silence", ):
             action = SILENCE
-            daemon = arg
+            daemon = arg[:len(arg) - len(".silence")] if arg.endswith(".silence") else arg
         elif opt in ("-f", "--force", ):
             force = True
         elif opt in ("-u", "--unsilence", ):
             action = UNSILENCE
-            daemon = arg
+            daemon = arg[:len(arg) - len(".silence")] if arg.endswith(".silence") else arg
         elif opt in ("-r", "--reportlevel", ):
             for rl in reportlevels:
                 if rl.startswith(arg):
