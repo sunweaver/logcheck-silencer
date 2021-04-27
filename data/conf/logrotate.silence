@@ -1,0 +1,8 @@
+# Normally no syslog logging, except from some su commands...
+# 
+# On Debian based systems, logroate runs at 06:25:00.
+# 
+# Please adjust the time (when logrotates runs on your system) in below lines to fulfill your needs...
+^\w{3}\ [0-9]{2}\ 06:25:[0-9]{2} [._[:alnum:]-]+ su:\ \(to [a-z]+)\ root\ on\ none$
+^\w{3}\ [0-9]{2}\ 06:25:[0-9]{2} [._[:alnum:]-]+ su:\ pam_unix\(su:session\):\ session\ opened\ for\ user\ [a-z]+\ by\ \(uid=0\)$
+^\w{3}\ [0-9]{2}\ 06:25:[0-9]{2} [._[:alnum:]-]+ su:\ pam_unix\(su:session\):\ session\ closed\ for\ user\ [a-z]+$
